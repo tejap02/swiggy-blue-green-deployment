@@ -37,7 +37,7 @@ phases:
       - echo "Running tests..."
       - echo "Building Docker image..."
       #  - cd Swiggy_clone
-      - docker build -t "$DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_USERNAME/swiggy:latest" .
+      - docker build  .
       - docker push "$DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_USERNAME/swiggy:latest"
 
     # post_build:
