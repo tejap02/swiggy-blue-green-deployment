@@ -47,7 +47,7 @@ phases:
       - trivy --debug image "$DOCKER_REGISTRY_USERNAME/swiggy:latest" >> trivyimage.txt
       - echo "Running OWASP Dependency-Check scan..."
     
-      # Download the dependency-check zip from S3
+       Download the dependency-check zip from S3
       - aws s3 cp s3://swiggy-bkt/Swiggy/dependency-check-7.0.2-release.zip ./dependency-check.zip
     
       # Unzip the downloaded file
