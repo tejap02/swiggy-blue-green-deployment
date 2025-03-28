@@ -8,6 +8,11 @@ env:
     SONAR_TOKEN: /cicd/sonar/sonar-token
 
 phases:
+  install:
+    runtime-versions:
+      python: 3.11
+      java: corretto17
+
   pre_build:
     commands:
       - echo "Installing dependencies..."
@@ -28,30 +33,42 @@ phases:
       - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u "$DOCKER_REGISTRY_USERNAME" --password-stdin "$DOCKER_REGISTRY_URL"
 
   build:
+   build:
     commands:
       - echo "Building Docker image..."
       - docker build --no-cache -t swiggy:latest .
-      - docker tag swiggy:latest "$DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_USERNAME/swiggy:latest"
-      - docker push "$DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_USERNAME/swiggy:latest"
+      - docker tag swiggy:latest tejap02/swiggy:latest
+      - docker push tejap02/swiggy:latest
+
 
   post_build:
     commands:
-      - echo "Performing Trivy image scan after building the image..."
+       -echo "Performing Trivy image scan after building the image..."
       - trivy --debug image "$DOCKER_REGISTRY_USERNAME/swiggy:latest" >> trivyimage.txt
       - echo "Running OWASP Dependency-Check scan..."
+    
+       Download the dependency-check zip from S3
       - aws s3 cp s3://swiggy-bkt/Swiggy/dependency-check-7.0.2-release.zip ./dependency-check.zip
+    
+      Unzip the downloaded file
       - unzip ./dependency-check.zip -d ./dependency-check
       - echo "Listing files in dependency-check folder:"
       - ls -R ./dependency-check
+
+      Navigate to the extracted directory
       - cd ./dependency-check/dependency-check/bin
+
+       Make the script executable
       - chmod +x ./dependency-check.sh
+
+       Run the dependency-check scan
       - ./dependency-check.sh --scan . --format ALL
+
       - echo "Build completed successfully!"
+    
       - echo "Running SonarQube analysis result"
       - sonar-scanner -Dsonar.projectKey=swiggy -Dsonar.sources=. -Dsonar.host.url=http://54.82.114.235:9000 -Dsonar.login=sqp_9ad01ae9846a6762e5bd5ed338d6e53c2f1942c1 -X
 
 artifacts:
   files:
     - appspec.yaml
-
-
