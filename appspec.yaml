@@ -3,7 +3,7 @@ Resources:
   - TargetService:
       Type: AWS::ECS::Service
       Properties:
-        TaskDefinition: "arn:aws:iam::442042549856:role/service-role/codebuild-swiggy22-service-role"
+        TaskDefinition: "arn:aws:iam::442042549856:role/service-role/codebuild-swiggy-clone-service-role"
         LoadBalancerInfo:
           ContainerName: "swiggy"
           ContainerPort: 3000
