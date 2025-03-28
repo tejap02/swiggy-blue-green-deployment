@@ -50,18 +50,18 @@ phases:
        Download the dependency-check zip from S3
       - aws s3 cp s3://swiggy-bkt/Swiggy/dependency-check-7.0.2-release.zip ./dependency-check.zip
     
-      # Unzip the downloaded file
+      Unzip the downloaded file
       - unzip ./dependency-check.zip -d ./dependency-check
       - echo "Listing files in dependency-check folder:"
       - ls -R ./dependency-check
 
-      # Navigate to the extracted directory
+      Navigate to the extracted directory
       - cd ./dependency-check/dependency-check/bin
 
-      # Make the script executable
+       Make the script executable
       - chmod +x ./dependency-check.sh
 
-      # Run the dependency-check scan
+       Run the dependency-check scan
       - ./dependency-check.sh --scan . --format ALL
 
       - echo "Build completed successfully!"
