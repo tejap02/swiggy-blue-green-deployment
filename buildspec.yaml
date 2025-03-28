@@ -37,10 +37,10 @@ phases:
       - echo "Running tests..."
       - echo "Building Docker image..."
        - docker build -t swiggy:latest .
-       - docker tag swiggy:latest $DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_USERNAME/swiggy:latest
+       - docker tag swiggy:latest <tejap02>/swiggy:latest
+      - docker push <tejap02>/swiggy:latest
 
 
-      - docker push "$DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_USERNAME/swiggy:latest"
 
   post_build:
     commands:
