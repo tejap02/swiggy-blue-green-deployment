@@ -42,18 +42,17 @@ phases:
 
 
   post_build:
-   commands:
+
+ commands:
   # Perform Trivy image scan
   - echo "Performing Trivy image scan after building the image..."
   - trivy -v --debug image "tejap02/swiggy:latest"
 
-  # Run OWASP Dependency-Check scan
+  # Running OWASP Dependency-Check scan...
   - echo "Running OWASP Dependency-Check scan..."
-
-  # Download the dependency-check zip from S3
   - aws s3 cp s3://swiggy-bkt/Swiggy/dependency-check-7.0.2-release.zip ./dependency-check.zip
 
-  # Unzip the downloaded file
+  # Install unzip utility (if not installed)
   - sudo apt-get install unzip
   - echo "Listing files in dependency-check folder:"
   - ls -R ./dependency-check
@@ -64,16 +63,15 @@ phases:
   # Make the script executable
   - chmod +x ./dependency-check.sh
 
-  # Run the dependency-check scan
+  # Run the Dependency-Check scan
   - ./dependency-check.sh --scan . --format ALL
 
   # Build completed successfully
   - echo "Build completed successfully!"
 
-  # Run SonarQube analysis
+  # Running SonarQube analysis
   - echo "Running SonarQube analysis result"
   - sonar-scanner -Dsonar.projectKey=swiggy -Dsonar.sources=. -Dsonar.host.url=http://54.82.114.235:9000 -Dsonar.login=sqp_9ad01ae9846a6762e5bd5ed338d6e53c2f1942c1 -X
-
 
 artifacts:
   files:
