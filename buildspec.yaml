@@ -53,7 +53,7 @@ phases:
 
 
     
-      Unzip the downloaded file
+      -Unzip the downloaded file
       - sudo apt-get install unzip
       - echo "Listing files in dependency-check folder:"
       - ls -R ./dependency-check
