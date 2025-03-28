@@ -32,24 +32,12 @@ phases:
       - export SONAR_SCANNER_OPTS="-server"
       - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u "$DOCKER_REGISTRY_USERNAME" --password-stdin "$DOCKER_REGISTRY_URL"
 
- 
-    build:
-  commands:
-    - echo "Running tests..."
-    - echo "Building Docker image..."
-    #  - cd Swiggy_clone
-    - docker build --no-cache --progress=plain -t swiggy:latest ..
-    - docker push "$DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_USERNAME/swiggy:latest"
-
-
-    # post_build:
-    #   commands:
-    #    - echo "Running tests..."
-    #    - echo "Building Docker image..."
-    #   #  - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u "$DOCKER_REGISTRY_USERNAME" --password-stdin "$DOCKER_REGISTRY_URL"
-    #    - docker build -t $DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_USERNAME/swiggy:latest .
-    #    - docker push $DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_USERNAME/swiggy:latest
-
+  build:
+    commands:
+      - echo "Running tests..."
+      - echo "Building Docker image..."
+      - docker build --no-cache --progress=plain -t swiggy:latest .
+      - docker push "$DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_USERNAME/swiggy:latest"
 
   post_build:
     commands:
@@ -64,42 +52,23 @@ phases:
       # Unzip the downloaded file
       - unzip ./dependency-check.zip -d ./dependency-check
       - echo "Listing files in dependency-check folder:"
-      # - ls -al ./dependency-check
       - ls -R ./dependency-check
 
-    
       # Navigate to the extracted directory
       - cd ./dependency-check/dependency-check/bin
 
-    
       # Make the script executable
       - chmod +x ./dependency-check.sh
-    
+
       # Run the dependency-check scan
       - ./dependency-check.sh --scan . --format ALL
+
       - echo "Build completed successfully!"
     
       - echo "Running SonarQube analysis result"
-      # - sonar-scanner \
-      #   - Dsonar.projectKey=Swiggy \
-      #   - Dsonar.sources=. \
-      #   - Dsonar.host.url=http://54.82.114.235:9000
       - sonar-scanner -Dsonar.projectKey=swiggy -Dsonar.sources=. -Dsonar.host.url=http://54.82.114.235:9000 -Dsonar.login=sqp_9ad01ae9846a6762e5bd5ed338d6e53c2f1942c1 -X
-
-
-
-
-# post_build:
-#   commands:
-#     - |
-#       aws ses send-email \
-#         --from "tejaswipatil0@gmail.com" \
-#         --to "tejaswipatil0@gmail.com" \
-#         --subject "CodeBuild Status: $CODEBUILD_BUILD_ID" \
-#         --text "Build status: $CODEBUILD_BUILD_STATUS" \
-#         --region "us-east-1"  
 
 artifacts:
   files:
-    #- '**/*'  # copy all files 
     - appspec.yaml
+
