@@ -42,8 +42,7 @@ phases:
 
 
   post_build:
-
- commands:
+  commands:
   # Perform Trivy image scan
   - echo "Performing Trivy image scan after building the image..."
   - trivy -v --debug image "tejap02/swiggy:latest"
