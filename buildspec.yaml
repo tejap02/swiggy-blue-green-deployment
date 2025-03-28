@@ -33,15 +33,12 @@ phases:
       - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u "$DOCKER_REGISTRY_USERNAME" --password-stdin "$DOCKER_REGISTRY_URL"
 
   build:
+   build:
     commands:
-      - echo "Running tests..."
       - echo "Building Docker image..."
-       - docker build --no-cache -t swiggy:latest .
-
-       - docker tag swiggy:latest tejap02/swiggy:latest
-
-      - docker push <tejap02>/swiggy:latest
-
+      - docker build --no-cache -t swiggy:latest .
+      - docker tag swiggy:latest tejap02/swiggy:latest
+      - docker push tejap02/swiggy:latest
 
 
   post_build:
