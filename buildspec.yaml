@@ -49,7 +49,8 @@ phases:
       - echo "Running OWASP Dependency-Check scan..."
     
        Download the dependency-check zip from S3
-       - aws s3 ls s3://swiggy-bkt/Swiggy/dependency-check-7.0.2-release.zip
+       - s3://swiggy-bkt/Swiggy/dependency-check-7.0.2-release.zip
+
 
 
 
