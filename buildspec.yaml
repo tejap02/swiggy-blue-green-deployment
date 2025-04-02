@@ -64,7 +64,7 @@ post_build:
 
   # Running SonarQube analysis
   - echo "Running SonarQube analysis result"
-  - sonar-scanner -Dsonar.projectKey=swiggy -Dsonar.sources=. -Dsonar.host.url=http://54.82.114.235:9000 -Dsonar.login=sqp_9ad01ae9846a6762e5bd5ed338d6e53c2f1942c1 -X
+  - sonar-scanner -Dsonar.projectKey=swiggy -Dsonar.sources=. -Dsonar.host.url=http://18.212.86.7:9000 -Dsonar.login=sqp_d2ab4cd7c5e981162b502ae8255e345cf77945ad -X
 artifacts:
   files:
     - appspec.yaml
